@@ -182,9 +182,31 @@ Base = (function () {
         }
     };
 
+    /**
+     * Simple options resolver
+     */
+    var Options = function (options, defaults) {
+
+        var opt = (options && isObject(options)) ? options : {};
+        var def = (defaults && isObject(defaults)) ? defaults : {};
+
+        for (var prop in opt) {
+            if (opt.hasOwnProperty(prop)) {
+                this[prop] = opt[prop];
+            }
+        }
+
+        for (var prop in def) {
+            if (def.hasOwnProperty(prop) && !this.hasOwnProperty(prop)) {
+                this[prop] = def[prop];
+            }
+        }
+    };
+
     return {
         extend: extend,
         HashSet: HashSet,
-        SmartArray: SmartArray
+        SmartArray: SmartArray,
+        Options: Options
     };
 }());
