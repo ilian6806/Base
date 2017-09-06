@@ -4,8 +4,24 @@
  * 
  * Date: 20145-10-16T20:07Z
  */
- 
-Base = (function () {
+
+(function (root, factory) {
+    if ( typeof define === 'function' && define.amd ) {
+        define('Base', factory(root));
+    } else if ( typeof exports === 'object' ) {
+        module.exports = factory(root);
+    } else {
+        root.Base = factory(root);
+    }
+})(this, function (root) {
+
+    'use strict';
+
+
+    // ----------------------------------------------------- //
+    // ------------------ Private helpers ------------------ //
+    // ----------------------------------------------------- //
+
 
     function isArray(arr) {
         return arr instanceof Array;
@@ -30,28 +46,30 @@ Base = (function () {
         return -1;
     }
 
-    /**
-     * Extend object and add optional methods to new objects prototype.
-     * If string is passed for parent, it looks for inner class to extend from.
-     */
-    function extend(child, parent, optMethods) {
+    function mergeObjects(o1, o2) {
 
-        if (isString(parent)) {
-            child.prototype = new this[parent]();
-        } else if (isFunction(parent)) {
-            child.prototype = new parent();
+        var obj1 = (o1 && isObject(o1)) ? o1 : {};
+        var obj2 = (o2 && isObject(o2)) ? o2 : {};
+        var result = {};
+
+        for (var prop in obj1) {
+            result[prop] = obj1[prop];
+        }
+        for (var prop in obj2) {
+            result[prop] = obj2[prop];
         }
 
-        child.prototype.constructor = child;
+        obj1 = null;
+        obj2 = null;
 
-        if (isObject(optMethods)) {
-            for (var i in optMethods) {
-                if (optMethods.hasOwnProperty(i) && isFunction(optMethods[i])) {
-                    child.prototype[i] = optMethods[i];
-                }
-            }
-        }
+        return result;
     }
+
+
+    // ----------------------------------------------------- //
+    // ------------------ Base classes --------------------- //
+    // ----------------------------------------------------- //
+
 
     /**
      * Basic hashset object
@@ -68,15 +86,19 @@ Base = (function () {
     };
 
     HashSet.prototype = {
+
         set: function (key, value) {
             this[key] = value;
         },
+
         remove: function (key) {
             delete this[key];
         },
+
         contains: function (key) {
             return this.hasOwnProperty(key);
         },
+
         each: function (func) {
             for (var i in this) {
                 if (this.hasOwnProperty(i)) {
@@ -84,6 +106,7 @@ Base = (function () {
                 }
             }
         },
+
         merge: function (set) {
             for (var i in set) {
                 if (set.hasOwnProperty(i) && !this.contains(i)) {
@@ -92,6 +115,7 @@ Base = (function () {
             }
             return this;
         },
+
         init: function (obj) {
             for (var i in obj) {
                 if (obj.hasOwnProperty(i)) {
@@ -101,6 +125,7 @@ Base = (function () {
             return this;
         }
     };
+
 
     /**
      * Extended array
@@ -127,60 +152,160 @@ Base = (function () {
     }
 
     SmartArray.prototype = {
+
         get: function (index) {
             return this.value[index];
         },
+
         pop: function () {
             return this.value.pop();
         },
+
         push: function (element) {
             return this.value.push(element);
         },
+
         shift: function () {
             return this.value.shift();
         },
+
         unshift: function (element) {
             return this.value.unshift(element);
         },
+
         remove: function (element) {
             if (indexOf(this.value, element) > -1) {
                 this.value.splice(indexOf(this.value, element), 1);
             }
         },
+
         contains: function (element) {
             for (var i = 0, l = this.value.length; i < l; i++) {
                 if (this.value[i] == element) return true;
             }
             return false;
         },
+
         first: function () {
             return this.value[0];
         },
+
         last: function () {
             return this.value[this.value.length - 1];
         },
+
         each: function (func) {
             for (var i = 0 ; i < this.value.length; i++) {
                 func.call(this.value[i], i);
             }
         },
+
         shuffle: function () {
             for (var j, x, i = this.value.length;
             i; j = parseInt(Math.random() * i), x = this.value[--i], this.value[i] = this.value[j], this.value[j] = x);
         },
+
         reverse: function () {
             this.value.reverse();
         },
+
         random: function () {
             return this.value[Math.floor(Math.random() * this.value.length)];
         },
+
         empty: function () {
             this.value.length = 0;
         },
+
         length: function () {
             return this.value.length;
         }
     };
+
+
+    /**
+     * Objects list
+     */
+    function ObjectsList() {
+
+        var args = Array.prototype.slice.call(arguments);
+
+        if (args.length > 0) {
+            if (isArray(args[0])) {
+                this.value = args[0];
+            } else {
+                this.value = args;
+            }
+        } else {
+            this.value = [];
+        }
+
+        // filter only object literal values on init
+        this.value = ObjectsList.prototype.filter.call(this, function () {
+            return isObject(this);
+        });
+
+        Object.defineProperty(this, 'length', {
+            get: function () {
+                return this.value.length;
+            }
+        });
+    }
+
+    ObjectsList.prototype = mergeObjects(SmartArray.prototype, {
+
+        push: function (element) {
+            if (isObject(element)) {
+                return this.value.push(element);
+            }
+        },
+
+        unshift: function (element) {
+            if (isObject(element)) {
+                return this.value.unshift(element);
+            }
+        },
+
+        filter: function (func) {
+
+            var result = [];
+
+            if (!isFunction(func)) {
+                return result;
+            }
+
+            this.each(function() {
+                if (!!func.call(this)) {
+                    result.push(this);
+                }
+            });
+
+            return result;
+        },
+
+        findOne: function (func) {
+
+            var result;
+
+            if (!isFunction(func)) {
+                return result;
+            }
+
+            for (var i = 0, len = this.value.length; i < len; i++) {
+                if (!!func.call(this.value[i])) {
+                    result = this.value[i];
+                    break;
+                }
+            }
+
+            return result;
+        },
+
+        contains: function (func) {
+            return !!this.filter(func).length;
+        }
+    });
+
 
     /**
      * Simple options resolver
@@ -203,10 +328,37 @@ Base = (function () {
         }
     };
 
+
+    /**
+     * Extend object and add optional methods to new objects prototype.
+     * If string is passed for parent, it looks for inner class to extend from.
+     */
+    function extend(child, parent, optMethods) {
+
+        if (isString(parent)) {
+            child.prototype = new this[parent]();
+        } else if (isFunction(parent)) {
+            child.prototype = new parent();
+        }
+
+        child.prototype.constructor = child;
+
+        if (isObject(optMethods)) {
+            for (var i in optMethods) {
+                if (optMethods.hasOwnProperty(i) && isFunction(optMethods[i])) {
+                    child.prototype[i] = optMethods[i];
+                }
+            }
+        }
+    }
+
+
     return {
-        extend: extend,
         HashSet: HashSet,
         SmartArray: SmartArray,
-        Options: Options
+        ObjectsList: ObjectsList,
+        Options: Options,
+        extend: extend
     };
-}());
+
+});
