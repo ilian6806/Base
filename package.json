@@ -1,0 +1,23 @@
+{
+  "name": "base",
+  "version": "1.0.0",
+  "description": "Some useful capsulated js data structures",
+  "main": "base.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilian6806/Base.git"
+  },
+  "author": "ilian.iliev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ilian6806/Base/issues"
+  },
+  "homepage": "https://github.com/ilian6806/Base#readme",
+  "devDependencies": {
+    "jasmine": "^2.8.0",
+    "jasmine-spec-reporter": "^4.2.1"
+  }
+}
