@@ -1,7 +1,8 @@
 # Base
 Some useful js data structures
 
-## HashSet
+
+### HashSet
 Basic dictionary
 
 ```javascript
@@ -18,7 +19,7 @@ unitsSet.each(function (key, value) {
 });
 ```
 
-## SmartArray
+### SmartArray
 Encapsulated array with utility methods
 
 ```javascript
@@ -44,7 +45,7 @@ arr.each(function () {
 arr.empty();
 ```
 
-## ObjectsList
+### ObjectsList
 It has all SmartArray methods plus more
 
 ```javascript
@@ -56,12 +57,12 @@ var units = new Base.ObjectsList([
 units.push({ type: 'spies', count: 20 });
 units.push(12); // silent fail and push nothing
 
-units.filter(function () { return this.count > 30; });
-units.findOne(function () { return this.type === 'spies'; });
+units.filter(function () { return this.count > 30; });           // [{ type: 'archers', count: 34 }, { type: 'swordsmen', count: 63 }]
+units.findOne(function () { return this.type === 'spies'; });    // { type: 'spies', count: 20 }
 units.contains(function () { return this.type === 'archers'; }); // true
 ```
 
-## extend option
+### extend option
 Extend some class or custom one
 
 ```javascript
