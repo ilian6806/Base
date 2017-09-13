@@ -1,0 +1,15 @@
+{
+    "spec_dir": "spec",
+    "spec_files": [
+        "HashSetSpec.js",
+        "SmartArraySpec.js",
+        "ObjectsListSpec.js",
+        "OptionsSpec.js",
+        "extendSpec.js"
+    ],
+    "helpers": [
+        "helpers/**/*.js"
+    ],
+    "stopSpecOnExpectationFailure": false,
+    "random": false
+}

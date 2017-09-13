@@ -1,7 +1,7 @@
 /**
  * Some useful capsulated js data structures.
  * @autor ilian.iliev
- * 
+ *
  * Date: 20145-10-16T20:07Z
  */
 
@@ -83,7 +83,7 @@
         if (initObject && isObject(initObject)) {
             this.init(initObject);
         }
-    };
+    }
 
     HashSet.prototype = {
 
@@ -215,10 +215,6 @@
 
         empty: function () {
             this.value.length = 0;
-        },
-
-        length: function () {
-            return this.value.length;
         }
     };
 
@@ -343,7 +339,7 @@
 
         child.prototype.constructor = child;
 
-        if (isObject(optMethods)) {
+        if (optMethods && isObject(optMethods)) {
             for (var i in optMethods) {
                 if (optMethods.hasOwnProperty(i) && isFunction(optMethods[i])) {
                     child.prototype[i] = optMethods[i];
