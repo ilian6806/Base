@@ -1,7 +1,7 @@
 # Base
 Some useful js data structures
 
-![](https://img.shields.io/badge/tests-36%2F36-green.svg) ![](https://img.shields.io/gemnasium/mathiasbynens/he.svg) ![](https://img.shields.io/npm/l/express.svg)
+![](https://img.shields.io/badge/tests-38%2F38-green.svg) ![](https://img.shields.io/gemnasium/mathiasbynens/he.svg) ![](https://img.shields.io/npm/l/express.svg)
 
 
 
