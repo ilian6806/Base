@@ -181,7 +181,7 @@
 
         contains: function (element) {
             for (var i = 0, l = this.value.length; i < l; i++) {
-                if (this.value[i] == element) return true;
+                if (this.value[i] === element) return true;
             }
             return false;
         },
@@ -202,7 +202,7 @@
 
         shuffle: function () {
             for (var j, x, i = this.value.length;
-            i; j = parseInt(Math.random() * i), x = this.value[--i], this.value[i] = this.value[j], this.value[j] = x);
+            i; j = parseInt(Math.random() * i, 10), x = this.value[--i], this.value[i] = this.value[j], this.value[j] = x);
         },
 
         reverse: function () {
@@ -271,7 +271,7 @@
             }
 
             this.each(function() {
-                if (!!func.call(this)) {
+                if (func.call(this)) {
                     result.push(this);
                 }
             });
@@ -288,7 +288,7 @@
             }
 
             for (var i = 0, len = this.value.length; i < len; i++) {
-                if (!!func.call(this.value[i])) {
+                if (func.call(this.value[i])) {
                     result = this.value[i];
                     break;
                 }
@@ -310,14 +310,15 @@
 
         var opt = (options && isObject(options)) ? options : {};
         var def = (defaults && isObject(defaults)) ? defaults : {};
+        var prop;
 
-        for (var prop in opt) {
+        for (prop in opt) {
             if (opt.hasOwnProperty(prop)) {
                 this[prop] = opt[prop];
             }
         }
 
-        for (var prop in def) {
+        for (prop in def) {
             if (def.hasOwnProperty(prop) && !this.hasOwnProperty(prop)) {
                 this[prop] = def[prop];
             }
