@@ -8,7 +8,17 @@ describe('SmartArray', function() {
     });
 
 
+    it('can be initialized empty', function() {
+        this.i = new Base.SmartArray();
+        expect(this.i.value).toEqual([]);
+    });
+
     it('can be initialized with initial value', function() {
+        this.i = new Base.SmartArray(2, 5, 6);
+        expect(this.i.value).toEqual([2, 5, 6]);
+    });
+
+    it('can be initialized with initial array value', function() {
         this.i = new Base.SmartArray([2, 5, 6]);
         expect(this.i.value).toEqual([2, 5, 6]);
     });

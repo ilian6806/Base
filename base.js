@@ -13,7 +13,7 @@
     } else {
         root.Base = factory(root);
     }
-})(this, function (root) {
+}(this, function (root) {
 
     'use strict';
 
@@ -51,11 +51,12 @@
         var obj1 = (o1 && isObject(o1)) ? o1 : {};
         var obj2 = (o2 && isObject(o2)) ? o2 : {};
         var result = {};
+        var prop;
 
-        for (var prop in obj1) {
+        for (prop in obj1) {
             result[prop] = obj1[prop];
         }
-        for (var prop in obj2) {
+        for (prop in obj2) {
             result[prop] = obj2[prop];
         }
 
@@ -63,6 +64,19 @@
         obj2 = null;
 
         return result;
+    }
+
+    function parseArrayArguments(args) {
+        var args = Array.prototype.slice.call(args);
+        if (args.length > 0) {
+            if (isArray(args[0])) {
+                return args[0];
+            } else {
+                return args;
+            }
+        } else {
+            return [];
+        }
     }
 
 
@@ -132,17 +146,7 @@
      */
     function SmartArray() {
 
-        var args = Array.prototype.slice.call(arguments);
-
-        if (args.length > 0) {
-            if (isArray(args[0])) {
-                this.value = args[0];
-            } else {
-                this.value = args;
-            }
-        } else {
-            this.value = [];
-        }
+        this.value = parseArrayArguments(arguments);
 
         Object.defineProperty(this, 'length', {
             get: function () {
@@ -224,17 +228,7 @@
      */
     function ObjectsList() {
 
-        var args = Array.prototype.slice.call(arguments);
-
-        if (args.length > 0) {
-            if (isArray(args[0])) {
-                this.value = args[0];
-            } else {
-                this.value = args;
-            }
-        } else {
-            this.value = [];
-        }
+        this.value = parseArrayArguments(arguments);
 
         // filter only object literal values on init
         this.value = ObjectsList.prototype.filter.call(this, function () {
@@ -358,4 +352,4 @@
         extend: extend
     };
 
-});
+}));
