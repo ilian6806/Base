@@ -67,7 +67,7 @@
     }
 
     function parseArrayArguments(args) {
-        var args = Array.prototype.slice.call(args);
+        args = Array.prototype.slice.call(args);
         if (args.length > 0) {
             if (isArray(args[0])) {
                 return args[0];
