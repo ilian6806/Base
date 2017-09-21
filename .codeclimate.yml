@@ -13,8 +13,7 @@ engines:
       guard-for-in:
         enabled: false
       complexity:
-        enabled: true
-        complexity: ["error", { "max": 20 }]
+        enabled: false
   fixme:
     enabled: true
 ratings:
