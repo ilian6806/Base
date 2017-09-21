@@ -1,7 +1,7 @@
 # Base
 Some useful js data structures
 
-![](https://img.shields.io/badge/tests-38%2F38-green.svg) ![](https://img.shields.io/gemnasium/mathiasbynens/he.svg) ![](https://img.shields.io/npm/l/express.svg)
+[![Code Climate](https://codeclimate.com/github/ilian6806/Base/badges/gpa.svg)](https://codeclimate.com/github/ilian6806/Base) [![Issue Count](https://codeclimate.com/github/ilian6806/Base/badges/issue_count.svg)](https://codeclimate.com/github/ilian6806/Base) ![](https://img.shields.io/badge/tests-38%2F38-green.svg) ![](https://img.shields.io/gemnasium/mathiasbynens/he.svg) ![](https://img.shields.io/npm/l/express.svg)
 
 
 
