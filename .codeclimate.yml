@@ -9,10 +9,12 @@ engines:
       - php
   eslint:
     enabled: true
-    complexity: ["error", { "max": 20 }]
     checks:
       guard-for-in:
         enabled: false
+      complexity:
+        enabled: true
+        complexity: ["error", { "max": 20 }]
   fixme:
     enabled: true
 ratings:
